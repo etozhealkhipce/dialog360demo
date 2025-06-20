@@ -44,7 +44,7 @@ const mockContacts: Contact[] = [
     status: "online",
     unreadCount: 2,
     lastMessage: {
-      text: "Hello!",
+      text: "Даб даб даб",
       timestamp: new Date(),
       isFromMe: false,
     },
@@ -56,7 +56,19 @@ const mockContacts: Contact[] = [
     status: "away",
     unreadCount: 0,
     lastMessage: {
-      text: "How are you?",
+      text: "Я гузлик",
+      timestamp: new Date(Date.now() - 3600000),
+      isFromMe: false,
+    },
+  },
+  {
+    id: "3",
+    name: "Шнырлик",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Alex",
+    status: "online",
+    unreadCount: 0,
+    lastMessage: {
+      text: "Как ты?",
       timestamp: new Date(Date.now() - 3600000),
       isFromMe: false,
     },
