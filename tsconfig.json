@@ -28,5 +28,5 @@
     }
   },
   "references": [{ "path": "./tsconfig.node.json" }],
-  "include": ["src", "pagination"]
+  "include": ["src", "pagination", "api"]
 }

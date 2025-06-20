@@ -1,0 +1,13 @@
+{
+  "functions": {
+    "api/360dialog/[...path].ts": {
+      "maxDuration": 30
+    }
+  },
+  "rewrites": [
+    {
+      "source": "/api/360dialog/(.*)",
+      "destination": "/api/360dialog/[...path]?path=$1"
+    }
+  ]
+}
