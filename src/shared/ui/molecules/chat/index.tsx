@@ -23,8 +23,12 @@ type ChatProps = {
   onApiKeyChange?: (value: string) => void;
   onUserPhoneChange?: (value: string) => void;
   onWebhookUrlChange?: (value: string) => void;
+  onSendVideo?: (contactId: string, file: File) => void;
+  onSendImage?: (contactId: string, file: File) => void;
   onSendMessage: (contactId: string, text: string) => void;
+  onSendDocument?: (contactId: string, file: File) => void;
   onSendAttachment?: (contactId: string, file: File) => void;
+  onSendAudio?: (contactId: string, audioBlob: Blob) => void;
 };
 
 export const Chat: FC<ChatProps> = ({
@@ -32,6 +36,10 @@ export const Chat: FC<ChatProps> = ({
   currentUser,
   onSendMessage,
   onSendAttachment,
+  onSendAudio,
+  onSendVideo,
+  onSendImage,
+  onSendDocument,
   className,
   apiKey = "",
   userPhone = "",
@@ -105,6 +113,130 @@ export const Chat: FC<ChatProps> = ({
     }
   };
 
+  const handleSendAudio = (audioBlob: Blob) => {
+    if (!selectedContact) return;
+
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      text: "Аудиосообщение",
+      timestamp: new Date(),
+      senderId: currentUser.id,
+      isFromMe: true,
+      status: "sent",
+      attachments: [
+        {
+          id: Date.now().toString(),
+          type: "audio",
+          url: URL.createObjectURL(audioBlob),
+          name: "audio_message.webm",
+          size: audioBlob.size,
+        },
+      ],
+    };
+
+    setMessages((prev) => ({
+      ...prev,
+      [selectedContact.id]: [...(prev[selectedContact.id] || []), newMessage],
+    }));
+
+    if (onSendAudio) {
+      onSendAudio(selectedContact.id, audioBlob);
+    }
+  };
+
+  const handleSendVideo = (file: File) => {
+    if (!selectedContact) return;
+
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      text: `Отправлено видео: ${file.name}`,
+      timestamp: new Date(),
+      senderId: currentUser.id,
+      isFromMe: true,
+      status: "sent",
+      attachments: [
+        {
+          id: Date.now().toString(),
+          type: "video",
+          url: URL.createObjectURL(file),
+          name: file.name,
+          size: file.size,
+        },
+      ],
+    };
+
+    setMessages((prev) => ({
+      ...prev,
+      [selectedContact.id]: [...(prev[selectedContact.id] || []), newMessage],
+    }));
+
+    if (onSendVideo) {
+      onSendVideo(selectedContact.id, file);
+    }
+  };
+
+  const handleSendImage = (file: File) => {
+    if (!selectedContact) return;
+
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      text: `Отправлено изображение: ${file.name}`,
+      timestamp: new Date(),
+      senderId: currentUser.id,
+      isFromMe: true,
+      status: "sent",
+      attachments: [
+        {
+          id: Date.now().toString(),
+          type: "image",
+          url: URL.createObjectURL(file),
+          name: file.name,
+          size: file.size,
+        },
+      ],
+    };
+
+    setMessages((prev) => ({
+      ...prev,
+      [selectedContact.id]: [...(prev[selectedContact.id] || []), newMessage],
+    }));
+
+    if (onSendImage) {
+      onSendImage(selectedContact.id, file);
+    }
+  };
+
+  const handleSendDocument = (file: File) => {
+    if (!selectedContact) return;
+
+    const newMessage: Message = {
+      id: Date.now().toString(),
+      text: `Отправлен документ: ${file.name}`,
+      timestamp: new Date(),
+      senderId: currentUser.id,
+      isFromMe: true,
+      status: "sent",
+      attachments: [
+        {
+          id: Date.now().toString(),
+          type: "document",
+          url: URL.createObjectURL(file),
+          name: file.name,
+          size: file.size,
+        },
+      ],
+    };
+
+    setMessages((prev) => ({
+      ...prev,
+      [selectedContact.id]: [...(prev[selectedContact.id] || []), newMessage],
+    }));
+
+    if (onSendDocument) {
+      onSendDocument(selectedContact.id, file);
+    }
+  };
+
   return (
     <div className={cn("flex h-screen bg-gray-50", className)}>
       <div
@@ -156,7 +288,11 @@ export const Chat: FC<ChatProps> = ({
             />
 
             <MessageInput
+              onSendAudio={handleSendAudio}
+              onSendVideo={handleSendVideo}
+              onSendImage={handleSendImage}
               onSendMessage={handleSendMessage}
+              onSendDocument={handleSendDocument}
               onSendAttachment={handleSendAttachment}
             />
           </>

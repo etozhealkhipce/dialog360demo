@@ -1,9 +1,30 @@
 export type WhatsAppMessage = {
   to: string;
-  type: "text" | "template";
   messaging_product: "whatsapp";
   text?: {
     body: string;
+  };
+  type: "text" | "audio" | "video" | "image" | "template" | "document";
+  audio?: {
+    id?: string;
+    link?: string;
+    caption?: string;
+  };
+  video?: {
+    id?: string;
+    link?: string;
+    caption?: string;
+  };
+  image?: {
+    id?: string;
+    link?: string;
+    caption?: string;
+  };
+  document?: {
+    id?: string;
+    link?: string;
+    caption?: string;
+    filename?: string;
   };
   template?: {
     name: string;

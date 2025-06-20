@@ -10,7 +10,11 @@ import {
   $currentUser,
   setUserPhone,
   setWebhookUrl,
+  sendAudioMessage,
+  sendVideoMessage,
+  sendImageMessage,
   setCurrentContact,
+  sendDocumentMessage,
 } from "./model";
 
 import {
@@ -34,12 +38,20 @@ export const ChatPage = () => {
     setUserPhone: setPhone,
     setWebhookUrl: setWebhook,
     sendMessage: sendMsg,
+    sendAudioMessage: sendAudio,
+    sendVideoMessage: sendVideo,
+    sendImageMessage: sendImage,
+    sendDocumentMessage: sendDocument,
   } = useUnit({
     setCurrentContact,
     setApiKey,
     setUserPhone,
     setWebhookUrl,
     sendMessage,
+    sendAudioMessage,
+    sendVideoMessage,
+    sendImageMessage,
+    sendDocumentMessage,
   });
 
   const handleSendMessage = (contactId: string, text: string) => {
@@ -59,6 +71,74 @@ export const ChatPage = () => {
     }
   };
 
+  const handleSendAudio = (contactId: string, audioBlob: Blob) => {
+    if (!apiKey || !userPhone) {
+      openFailureToast("Please configure API settings first");
+      return;
+    }
+
+    const contact = contacts.find((c) => c.id === contactId);
+    if (contact) {
+      setContact(contact);
+      setTimeout(() => {
+        sendAudio(audioBlob);
+      }, 0);
+    } else {
+      sendAudio(audioBlob);
+    }
+  };
+
+  const handleSendVideo = (contactId: string, file: File) => {
+    if (!apiKey || !userPhone) {
+      openFailureToast("Please configure API settings first");
+      return;
+    }
+
+    const contact = contacts.find((c) => c.id === contactId);
+    if (contact) {
+      setContact(contact);
+      setTimeout(() => {
+        sendVideo(file);
+      }, 0);
+    } else {
+      sendVideo(file);
+    }
+  };
+
+  const handleSendImage = (contactId: string, file: File) => {
+    if (!apiKey || !userPhone) {
+      openFailureToast("Please configure API settings first");
+      return;
+    }
+
+    const contact = contacts.find((c) => c.id === contactId);
+    if (contact) {
+      setContact(contact);
+      setTimeout(() => {
+        sendImage(file);
+      }, 0);
+    } else {
+      sendImage(file);
+    }
+  };
+
+  const handleSendDocument = (contactId: string, file: File) => {
+    if (!apiKey || !userPhone) {
+      openFailureToast("Please configure API settings first");
+      return;
+    }
+
+    const contact = contacts.find((c) => c.id === contactId);
+    if (contact) {
+      setContact(contact);
+      setTimeout(() => {
+        sendDocument(file);
+      }, 0);
+    } else {
+      sendDocument(file);
+    }
+  };
+
   const handleSave = () => {
     openSuccessToast("Configuration saved successfully!");
   };
@@ -74,8 +154,12 @@ export const ChatPage = () => {
         onApiKeyChange={setKey}
         currentUser={currentUser}
         onUserPhoneChange={setPhone}
+        onSendAudio={handleSendAudio}
+        onSendVideo={handleSendVideo}
+        onSendImage={handleSendImage}
         onWebhookUrlChange={setWebhook}
         onSendMessage={handleSendMessage}
+        onSendDocument={handleSendDocument}
       />
     </div>
   );
