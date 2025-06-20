@@ -39,7 +39,7 @@ export const $isLoading = createStore<boolean>(false);
 const mockContacts: Contact[] = [
   {
     id: "1",
-    name: "John Doe",
+    name: "Валерий Альбертович",
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=John",
     status: "online",
     unreadCount: 2,
@@ -51,7 +51,7 @@ const mockContacts: Contact[] = [
   },
   {
     id: "2",
-    name: "Jane Smith",
+    name: "Ромка Гузлик",
     avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=Jane",
     status: "away",
     unreadCount: 0,
