@@ -4,8 +4,13 @@ import QueryStringAddon from "wretch/addons/queryString";
 
 import { NetworkException } from "./exceptions";
 
+const isProduction = import.meta.env.PROD;
+const baseUrl = isProduction
+  ? "https://waba-sandbox.360dialog.io/v1/"
+  : "/api/";
+
 // ONLY RELATIVE path to the API
-export const httpClient = wretch(`/api/`)
+export const httpClient = wretch(baseUrl)
   .addon(QueryStringAddon)
   .addon(FormDataAddon)
   .catcherFallback((error) => {
